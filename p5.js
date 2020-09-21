@@ -10,7 +10,7 @@ module.exports={
     "files": {
         "src/color/color_conversion.js": {
             "name": "src/color/color_conversion.js",
-            "modules": {
+          "modules": {
                 "Color Conversion": 1
             },
             "classes": {},

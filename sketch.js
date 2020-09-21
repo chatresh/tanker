@@ -1,43 +1,70 @@
+// You could have multiple flags like: start, launch to indicate the state of the game.
 
+const { Body, Mouse, MouseConstraint, Constraint, Composite, Detector } = Matter;
+// The above line creates different constant variables for Engine, World, Bodies etc.
 
-const { Engine, World, Bodies, Body, Mouse, MouseConstraint, Constraint, Composite, Detector } = Matter;
+const Engine = Matter.Engine;
+const World= Matter.World;
+const Bodies = Matter.Bodies;
 
-
+var engine,world;
+var ground1;
+var shootergun;
+function preload(){
+    shootergun = loadImage("download.jpg")
+}
 function setup() {
-   var canvas = createCanvas(600,400);
+    // Setup the canvas, the ground the, tanker, the shooting ball and the bubble balls.
 
-   engine = Engine.create();
-   world = engine.world;
+ var canvas =  createCanvas(1400,550);
+ 
+ engine = Engine.create();
+ world = engine.world;
 
-   ground = new Ground(0,390,2000,20);
 
-   base1 = new Box(80,380,150,10);
-   base2 = new Box(80,370,150,10); 
+ tan = new Tanker();
+ ground1 = new Ground(700,455,1400,20);
+ ground2 = new Ground(95,200,115,30);
+CanonBall1 = new CanonBall(830,410,50,50)
+CanonBall2 = new CanonBall(850,450,50,50)
+CanonBall3 = new CanonBall(790,450,50,50)
 
-   shoot = new Shot(110,325,120,20);
+shotBall1 = new ShootBall(179,180,40,40)
+sling = new SlingShot(shotBall1.body,{x:179,y:180});
 
-   ball1 = new Ball(200,100,15);
-  
-    
 }
 
 function draw() {
+// Remember to update the Matter Engine and set the background.
+background(56,24,226);
+Engine.update(engine);
+tan.display();
+CanonBall1.display();
+CanonBall2.display();
+CanonBall3.display();
 
-    background(0);
+for (var i = 80; i<1300; i = i+200){
+ var sprite = createSprite(i,50,20,20)
+ sprite.addImage(shootergun)
+}
 
-    Engine.update(engine);
+textSize(100)
+text("T A N K E R  G A M E",220,230)
+shotBall1.display();
+ground1.display();
+ground2.display();
 
-    ground.display();
+drawSprites();
+}
+function mouseDragged(){
+    Matter.Body.setPosition(shotBall1.body, {x: mouseX , y: mouseY});
+}
 
-    base1.display();
-    base2.display();
-    shoot.display();
-    ball1.display();
-
-    arc (80,height - 40,150,130,PI,TWO_PI);
-
-    
-
-
-
+function mouseReleased(){
+    sling.fly();
+}
+function keyPressed(){
+    if(keyCode===32){
+     sling.attach(shotBall1.body);
+    }
 }
